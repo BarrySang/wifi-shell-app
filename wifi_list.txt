@@ -1,0 +1,2 @@
+IN-USE  BSSID              SSID            MODE   CHAN  RATE        SIGNAL  BARS  SECURITY 
+*       92:4C:75:EE:DF:50  Redmi Note 10S  Infra  1     117 Mbit/s  67      ▂▄▆_  WPA2     

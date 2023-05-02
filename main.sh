@@ -15,7 +15,6 @@ then
     # use 'nmcli' to turn wifi device on
     # nmcli radio wifi on
 
-    # scan for available wifi networks
-    available_networks=$(nmcli dev wifi list)
-    echo $available_networks
+    # scan for available wifi networks and store the details in a text file
+    nmcli dev wifi list > wifi_list.txt
 fi
