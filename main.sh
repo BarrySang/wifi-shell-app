@@ -15,6 +15,29 @@ then
     # use 'nmcli' to turn wifi device on
     # nmcli radio wifi on
 
-    # scan for available wifi networks and store the details in a text file
-    nmcli dev wifi list > wifi_list.txt
+    # get the available network interfaces and store them in a txt file
+    ip link show | awk -F': ' '/^[0-9]+:/{print $2}' > network_interfaces_list.txt
+
+    # create an empty array to store the names of the available network interfaces
+    network_interfaces=()
+    while IFS= read -r line; do
+        network_interfaces+=("$line")
+    done < "network_interfaces_list.txt"
+
+    # show the names of the network interfaces as a selectable list
+    selected_interface=$(zenity --list --title "Select a Network Interface" --column "Network Interfaces" "${network_interfaces[@]}")
+
+    # get and store the names and signal strengths of the available wifi networks
+    nmcli --terse --fields ssid,signal dev wifi list ifname $selected_interface > available_networks.txt
+
+    # declare array to store available networks in
+    available_networks=()
+    while IFS= read -r line; do
+        result=$(echo "$line" | rev | awk -F: '{print substr($0, index($0,$2))}' | rev)
+        # echo "$result"
+        available_networks+=("$result")
+    done < "available_networks.txt"
+
+    # show the names and signal strengths of the available wifi networks
+    selected_network=$(zenity --list --title "Select a Network" --column "Available Networks" "${available_networks[@]}")
 fi
