@@ -28,7 +28,7 @@ then
     selected_interface=$(zenity --list --title "Select a Network Interface" --column "Network Interfaces" "${network_interfaces[@]}")
 
     # get and store the names and signal strengths of the available wifi networks
-    nmcli --terse --fields ssid,signal dev wifi list ifname $selected_interface > available_networks.txt
+    nmcli --terse --fields ssid,signal dev wifi list ifname $selected_interface > available_networks_list.txt
 
     # declare array to store available networks in
     available_networks=()
@@ -36,7 +36,7 @@ then
         result=$(echo "$line" | rev | awk -F: '{print substr($0, index($0,$2))}' | rev)
         # echo "$result"
         available_networks+=("$result")
-    done < "available_networks.txt"
+    done < "available_networks_list.txt"
 
     # show the names and signal strengths of the available wifi networks
     selected_network=$(zenity --list --title "Select a Network" --column "Available Networks" "${available_networks[@]}")
